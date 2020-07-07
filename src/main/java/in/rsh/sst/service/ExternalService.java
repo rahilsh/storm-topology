@@ -1,7 +1,7 @@
-package in.rsh.storm.service;
+package in.rsh.sst.service;
 
 import com.google.inject.Inject;
-import in.rsh.storm.client.HttpClient;
+import in.rsh.sst.client.HttpClient;
 
 public class ExternalService {
 

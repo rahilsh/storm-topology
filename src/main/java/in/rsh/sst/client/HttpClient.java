@@ -1,4 +1,4 @@
-package in.rsh.storm.client;
+package in.rsh.sst.client;
 
 public class HttpClient {
 

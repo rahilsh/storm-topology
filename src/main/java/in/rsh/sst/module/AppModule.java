@@ -1,10 +1,10 @@
-package in.rsh.storm.module;
+package in.rsh.sst.module;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import in.rsh.storm.client.HttpClient;
+import in.rsh.sst.client.HttpClient;
 import javax.inject.Named;
 
 public class AppModule implements Module {
@@ -14,9 +14,9 @@ public class AppModule implements Module {
 
   @Provides
   @Singleton
-  @Named("s")
-  public String getS() {
-    return "test1";
+  @Named("dummyConstant")
+  public String getDummyConstant() {
+    return "dummyValue";
   }
 
   @Provides

@@ -1,18 +1,20 @@
-package in.rsh.storm;
+package in.rsh.sst;
 
 import com.google.inject.Injector;
-import in.rsh.storm.bolt.PrintBolt;
-import in.rsh.storm.bolt.SquareBolt;
-import in.rsh.storm.spout.GenerateNumberSpout;
-import in.rsh.storm.util.GuiceUtil;
+import in.rsh.sst.bolt.PrintBolt;
+import in.rsh.sst.bolt.SquareBolt;
+import in.rsh.sst.spout.GenerateNumberSpout;
+import in.rsh.sst.util.GuiceUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
 import org.apache.storm.generated.StormTopology;
 import org.apache.storm.topology.TopologyBuilder;
 
+@Slf4j
 public class Main {
   public static void main(String[] args) throws Exception {
-    System.out.println("Hello storm");
+    log.info("Hello storm");
     final Injector injector = GuiceUtil.getInjector();
     final TopologyBuilder topologyBuilder = new TopologyBuilder();
     topologyBuilder.setSpout("number_spout", new GenerateNumberSpout());

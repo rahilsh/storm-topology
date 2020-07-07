@@ -1,4 +1,4 @@
-package in.rsh.storm.spout;
+package in.rsh.sst.spout;
 
 import java.util.Map;
 import org.apache.storm.spout.SpoutOutputCollector;
@@ -12,7 +12,7 @@ import org.apache.storm.utils.Utils;
 public class GenerateNumberSpout extends BaseRichSpout {
 
   private SpoutOutputCollector spoutOutputCollector;
-  private Integer i = 2;
+  private Integer index = 2;
 
   public void open(
       Map<String, Object> map,
@@ -23,8 +23,8 @@ public class GenerateNumberSpout extends BaseRichSpout {
 
   public void nextTuple() {
     Utils.sleep(100);
-    this.spoutOutputCollector.emit(new Values(i));
-    i += 2;
+    this.spoutOutputCollector.emit(new Values(index));
+    index += 2;
   }
 
   public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
