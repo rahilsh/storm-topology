@@ -1,4 +1,4 @@
-package in.rsh.sst.bolt;
+package in.rsh.sst.latest.bolt;
 
 import java.util.Map;
 import org.apache.storm.task.OutputCollector;

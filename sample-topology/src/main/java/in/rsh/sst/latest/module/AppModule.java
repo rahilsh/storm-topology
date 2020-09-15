@@ -1,10 +1,10 @@
-package in.rsh.sst.module;
+package in.rsh.sst.latest.module;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import in.rsh.sst.client.HttpClient;
+import in.rsh.sst.latest.client.HttpClient;
 import javax.inject.Named;
 
 public class AppModule implements Module {

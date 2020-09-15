@@ -1,4 +1,4 @@
-package in.rsh.sst.spout;
+package in.rsh.sst.latest.spout;
 
 import java.util.Map;
 import org.apache.storm.spout.SpoutOutputCollector;

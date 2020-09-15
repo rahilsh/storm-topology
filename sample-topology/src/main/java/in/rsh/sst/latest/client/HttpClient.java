@@ -1,4 +1,4 @@
-package in.rsh.sst.client;
+package in.rsh.sst.latest.client;
 
 public class HttpClient {
 

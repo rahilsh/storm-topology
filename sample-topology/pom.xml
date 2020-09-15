@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
-  <artifactId>simple-storm-topology</artifactId>
-  <packaging>pom</packaging>
-  <modules>
-    <module>trident-drpc</module>
-    <module>storm-latest</module>
-  </modules>
-  <groupId>in.rsh.sst</groupId>
-  <version>1.0.0-SNAPSHOT</version>
-
+  <parent>
+    <artifactId>simple-storm-topology</artifactId>
+    <groupId>in.rsh.sst</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>in.rsh.sst.latest</groupId>
+  <artifactId>storm-latest</artifactId>
   <build>
     <plugins>
       <plugin>
@@ -43,19 +41,30 @@
       </plugin>
     </plugins>
   </build>
-  <modelVersion>4.0.0</modelVersion>
+  <dependencies>
+    <dependency>
+      <artifactId>storm-core</artifactId>
+      <groupId>org.apache.storm</groupId>
+      <version>2.1.0</version>
+    </dependency>
+    <dependency>
+      <artifactId>javax.inject</artifactId>
+      <groupId>javax.inject</groupId>
+      <version>1</version>
+    </dependency>
+    <dependency>
+      <artifactId>guice</artifactId>
+      <groupId>com.google.inject</groupId>
+      <version>4.2.3</version>
+    </dependency>
+    <dependency>
+      <artifactId>lombok</artifactId>
+      <groupId>org.projectlombok</groupId>
+      <scope>provided</scope>
+      <version>1.18.12</version>
+    </dependency>
+  </dependencies>
   <properties>
     <java.version>1.8</java.version>
   </properties>
-
-  <repositories>
-    <repository>
-      <id>carbonite-repo</id>
-      <url>https://clojars.org/repo/</url>
-    </repository>
-    <repository>
-      <id>maven-central</id>
-      <url>https://repo.maven.apache.org/maven2/</url>
-    </repository>
-  </repositories>
 </project>

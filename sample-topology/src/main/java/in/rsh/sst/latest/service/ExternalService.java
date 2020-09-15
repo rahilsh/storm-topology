@@ -1,7 +1,7 @@
-package in.rsh.sst.service;
+package in.rsh.sst.latest.service;
 
 import com.google.inject.Inject;
-import in.rsh.sst.client.HttpClient;
+import in.rsh.sst.latest.client.HttpClient;
 
 public class ExternalService {
 
