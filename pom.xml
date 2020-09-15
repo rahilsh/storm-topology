@@ -7,7 +7,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>trident-drpc</module>
-    <module>storm-latest</module>
+    <module>sample-topology</module>
   </modules>
   <groupId>in.rsh.sst</groupId>
   <version>1.0.0-SNAPSHOT</version>
