@@ -10,7 +10,7 @@ import org.apache.storm.trident.operation.builtin.Sum;
 import org.apache.storm.trident.testing.Split;
 import org.apache.storm.tuple.Fields;
 
-public class WordCount {
+public class WordCountTridentDRPC {
 
   public static void main(String[] args) {
     TridentTopology topology = new TridentTopology();
