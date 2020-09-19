@@ -6,6 +6,7 @@ import in.rsh.sst.latest.module.AppModule;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+//TODO: use Workerhook instead of this
 public class GuiceUtil {
 
   private static final Injector injector = Guice.createInjector(new AppModule());

@@ -4,7 +4,7 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import in.rsh.sst.latest.client.HttpClient;
+import in.rsh.sst.latest.client.DummyClass;
 import javax.inject.Named;
 
 public class AppModule implements Module {
@@ -21,7 +21,7 @@ public class AppModule implements Module {
 
   @Provides
   @Singleton
-  public HttpClient getHttpClient() {
-    return new HttpClient("something variable");
+  public DummyClass getDummyInstance() {
+    return new DummyClass("something variable");
   }
 }

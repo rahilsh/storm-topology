@@ -1,10 +1,10 @@
 package in.rsh.sst.latest.client;
 
-public class HttpClient {
+public class DummyClass {
 
   private final String something;
 
-  public HttpClient(String something) {
+  public DummyClass(String something) {
     this.something = something;
   }
 

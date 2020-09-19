@@ -1,18 +1,18 @@
 package in.rsh.sst.latest.service;
 
 import com.google.inject.Inject;
-import in.rsh.sst.latest.client.HttpClient;
+import in.rsh.sst.latest.client.DummyClass;
 
 public class ExternalService {
 
-  private final HttpClient httpClient;
+  private final DummyClass dummyClass;
 
   @Inject
-  public ExternalService(HttpClient httpClient) {
-    this.httpClient = httpClient;
+  public ExternalService(DummyClass dummyClass) {
+    this.dummyClass = dummyClass;
   }
 
   public String getSomething() {
-    return httpClient.getSomething();
+    return dummyClass.getSomething();
   }
 }
