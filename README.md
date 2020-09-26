@@ -1,3 +1,3 @@
 # simple-storm-topology
 
-A simple and working storm topology which is ready to deploy on storm
+A simple and ready to deploy [storm](http://storm.apache.org/) topology
