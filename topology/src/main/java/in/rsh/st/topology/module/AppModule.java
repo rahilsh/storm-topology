@@ -1,10 +1,10 @@
-package in.rsh.sst.latest.module;
+package in.rsh.st.topology.module;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import in.rsh.sst.latest.client.DummyClass;
+import in.rsh.st.topology.client.DummyClass;
 import javax.inject.Named;
 
 public class AppModule implements Module {

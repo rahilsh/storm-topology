@@ -1,10 +1,10 @@
-package in.rsh.sst.latest;
+package in.rsh.st.topology;
 
 import com.google.inject.Injector;
-import in.rsh.sst.latest.bolt.PrintBolt;
-import in.rsh.sst.latest.bolt.SquareBolt;
-import in.rsh.sst.latest.spout.GenerateNumberSpout;
-import in.rsh.sst.latest.util.GuiceUtil;
+import in.rsh.st.topology.bolt.PrintBolt;
+import in.rsh.st.topology.bolt.SquareBolt;
+import in.rsh.st.topology.spout.GenerateNumberSpout;
+import in.rsh.st.topology.util.GuiceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;

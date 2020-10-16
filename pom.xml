@@ -3,13 +3,13 @@
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <artifactId>simple-storm-topology</artifactId>
+  <artifactId>storm-topology</artifactId>
   <packaging>pom</packaging>
   <modules>
     <module>trident-drpc</module>
-    <module>sample-topology</module>
+    <module>topology</module>
   </modules>
-  <groupId>in.rsh.sst</groupId>
+  <groupId>in.rsh.st</groupId>
   <version>1.0.0-SNAPSHOT</version>
 
   <build>
