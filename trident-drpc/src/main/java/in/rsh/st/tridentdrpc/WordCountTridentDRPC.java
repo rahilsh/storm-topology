@@ -12,7 +12,7 @@ import org.apache.storm.tuple.Fields;
 
 public class WordCountTridentDRPC {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
     TridentTopology topology = new TridentTopology();
     LocalDRPC drpc = new LocalDRPC();
 
