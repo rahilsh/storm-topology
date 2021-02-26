@@ -55,7 +55,7 @@
     <dependency>
       <artifactId>guice</artifactId>
       <groupId>com.google.inject</groupId>
-      <version>4.2.3</version>
+      <version>5.0.0</version>
     </dependency>
     <dependency>
       <artifactId>lombok</artifactId>
