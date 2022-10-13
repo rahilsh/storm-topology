@@ -1,3 +1,3 @@
 # simple-storm-topology
 
-Collection of useful [storm](http://storm.apache.org/) topologies
+Collection of useful [Apache Storm](http://storm.apache.org/) topologies
