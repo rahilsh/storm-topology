@@ -14,7 +14,7 @@ import org.apache.storm.topology.TopologyBuilder;
 @Slf4j
 public class Main {
   public static void main(String[] args) throws Exception {
-    log.info("Hello storm");
+    log.info("Hello storm!");
     final Injector injector = GuiceUtil.getInjector();
     final TopologyBuilder topologyBuilder = new TopologyBuilder();
     topologyBuilder.setSpout("number_spout", new GenerateNumberSpout());
