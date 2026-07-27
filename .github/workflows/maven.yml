@@ -21,5 +21,5 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: 25
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+    - name: Build and test with Maven
+      run: mvn -B verify --file pom.xml
