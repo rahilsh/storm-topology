@@ -12,7 +12,9 @@ import org.apache.storm.tuple.Values;
 
 public class SquareBolt extends BaseRichBolt {
 
-  private OutputCollector outputCollector;
+  private static final long serialVersionUID = 1L;
+
+  private transient OutputCollector outputCollector;
 
   public void prepare(
       Map<String, Object> map, TopologyContext topologyContext, OutputCollector outputCollector) {

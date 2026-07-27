@@ -18,8 +18,10 @@ import org.apache.storm.tuple.Tuple;
 @Slf4j
 public class PrintBolt extends BaseRichBolt {
 
+  private static final long serialVersionUID = 1L;
+
   private String dummyConstant;
-  private ExternalService externalService;
+  private transient ExternalService externalService;
 
   private Map<Integer, Integer> numsq = null;
 

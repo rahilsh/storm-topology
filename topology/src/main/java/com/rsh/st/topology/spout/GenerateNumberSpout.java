@@ -12,7 +12,9 @@ import org.apache.storm.utils.Utils;
 
 public class GenerateNumberSpout extends BaseRichSpout {
 
-  private SpoutOutputCollector spoutOutputCollector;
+  private static final long serialVersionUID = 1L;
+
+  private transient SpoutOutputCollector spoutOutputCollector;
   private Integer index = 2;
 
   public void open(

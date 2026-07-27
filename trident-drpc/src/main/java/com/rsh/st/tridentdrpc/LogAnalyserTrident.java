@@ -4,7 +4,7 @@ package com.rsh.st.tridentdrpc;
 import com.google.common.collect.ImmutableList;
 import com.rsh.st.tridentdrpc.function.CSVSplit;
 import com.rsh.st.tridentdrpc.function.FormatCall;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
 import org.apache.storm.LocalDRPC;
@@ -55,7 +55,7 @@ public class LogAnalyserTrident {
       Config conf = new Config();
       try (LocalCluster cluster = new LocalCluster()) {
         cluster.submitTopology("trident", conf, topology.build());
-        Random randomGenerator = new Random();
+        ThreadLocalRandom randomGenerator = ThreadLocalRandom.current();
         int idx = 0;
 
         while (idx < 10) {
