@@ -91,6 +91,28 @@ mvn -pl trident-drpc exec:java \
   -Dexec.mainClass=com.rsh.st.tridentdrpc.LogAnalyserTrident
 ```
 
+## Dependency injection in a bolt
+
+Storm constructs bolts itself, so `PrintBolt` can't be created by a Guice
+injector directly. Instead the injector is exposed as a process-wide singleton
+and the bolt pulls its collaborators when it starts:
+
+- `AppModule` declares the Guice bindings.
+- `GuiceUtil` holds a single `Injector` in a `static` field.
+- `PrintBolt.prepare()` resolves its dependencies from that injector.
+
+```
+AppModule (bindings)  ->  GuiceUtil (static Injector)  ->  PrintBolt.prepare()
+```
+
+> **Caveat — local vs. distributed mode.** Bolts are serialized and shipped to
+> workers; the static `Injector` is **not** serialized — it is lazily recreated
+> in each worker JVM the first time `GuiceUtil` is loaded. That is fine for the
+> stateless bindings used here, but any binding that depends on runtime
+> configuration passed through the topology `Config` will not see it. For
+> production wiring, resolve dependencies in `prepare()` from the Storm
+> `conf`/`TopologyContext`, or use a Storm `WorkerHook`.
+
 ## Build & Test
 
 Make sure Maven runs on JDK 25, then:
