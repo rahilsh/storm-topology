@@ -1,5 +1,10 @@
 # storm-topology
 
+[![Java CI with Maven](https://github.com/rahilsh/storm-topology/actions/workflows/maven.yml/badge.svg)](https://github.com/rahilsh/storm-topology/actions/workflows/maven.yml)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Java 25](https://img.shields.io/badge/Java-25-orange.svg)](https://adoptium.net/)
+[![Apache Storm 3.0.0](https://img.shields.io/badge/Apache%20Storm-3.0.0-brightgreen.svg)](https://storm.apache.org/)
+
 Runnable, self-contained [Apache Storm](https://storm.apache.org/) examples that
 demonstrate core streaming, Trident, and DRPC patterns on Storm 3.x. Every
 example runs on an in-process `LocalCluster`, so you can explore Storm without
