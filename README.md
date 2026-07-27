@@ -7,6 +7,9 @@ A collection of example [Apache Storm](http://storm.apache.org/) topologies demo
 - **Java 25** (required by Apache Storm 3.0.0)
 - Maven 3.9+
 
+The build fails fast with a clear message (via `maven-enforcer-plugin`) if a
+lower JDK is used.
+
 ## Modules
 
 ### `topology`
@@ -26,9 +29,16 @@ Higher-level [Trident](https://storm.apache.org/releases/current/Trident-tutoria
 
 ## Build & Test
 
+Make sure Maven runs on JDK 25, then:
+
 ```bash
+export JAVA_HOME=$(/usr/libexec/java_home -v 25)   # macOS
 mvn clean test
 ```
+
+> Note: if `java_home -v 25` resolves to an older JDK, the Homebrew JDK 25 is
+> not registered with macOS. Point `JAVA_HOME` at it directly, e.g.
+> `JAVA_HOME=/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home`.
 
 ## Run
 
