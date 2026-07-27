@@ -11,9 +11,6 @@
 
   <groupId>com.rsh.st.tridentdrpc</groupId>
   <artifactId>trident-drpc</artifactId>
-  <properties>
-    <java.version>25</java.version>
-  </properties>
 
   <dependencies>
     <dependency>

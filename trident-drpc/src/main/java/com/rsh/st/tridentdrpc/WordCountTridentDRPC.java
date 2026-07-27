@@ -1,4 +1,4 @@
-package com.rsh.st.trident_drpc;
+package com.rsh.st.tridentdrpc;
 
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;

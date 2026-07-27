@@ -36,5 +36,5 @@ Each example exposes a `main` method that submits the topology to a `LocalCluste
 Run the class directly from your IDE, or package and run it:
 
 - `com.rsh.st.topology.Main`
-- `com.rsh.st.trident_drpc.WordCountTridentDRPC`
-- `com.rsh.st.trident_drpc.LogAnalyserTrident`
+- `com.rsh.st.tridentdrpc.WordCountTridentDRPC`
+- `com.rsh.st.tridentdrpc.LogAnalyserTrident`

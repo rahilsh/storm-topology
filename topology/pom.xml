@@ -52,7 +52,4 @@
       <version>1.18.46</version>
     </dependency>
   </dependencies>
-  <properties>
-    <java.version>25</java.version>
-  </properties>
 </project>

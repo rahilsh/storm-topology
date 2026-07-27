@@ -1,8 +1,8 @@
-package com.rsh.st.trident_drpc;
+package com.rsh.st.tridentdrpc;
 
 import com.google.common.collect.ImmutableList;
-import com.rsh.st.trident_drpc.function.CSVSplit;
-import com.rsh.st.trident_drpc.function.FormatCall;
+import com.rsh.st.tridentdrpc.function.CSVSplit;
+import com.rsh.st.tridentdrpc.function.FormatCall;
 import java.util.Random;
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
