@@ -1,14 +1,19 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package com.rsh.st.topology.bolt;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import org.apache.storm.task.OutputCollector;
+import org.apache.storm.topology.OutputFieldsDeclarer;
+import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
 import org.apache.storm.tuple.Values;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 class SquareBoltTest {
 
@@ -23,5 +28,16 @@ class SquareBoltTest {
     bolt.execute(tuple);
 
     verify(collector).emit(new Values(5, 25));
+  }
+
+  @Test
+  void declaresNumberAndSquareFields() {
+    OutputFieldsDeclarer declarer = mock(OutputFieldsDeclarer.class);
+
+    new SquareBolt().declareOutputFields(declarer);
+
+    ArgumentCaptor<Fields> captor = ArgumentCaptor.forClass(Fields.class);
+    verify(declarer).declare(captor.capture());
+    assertEquals(List.of("numbers", "numbersquare"), captor.getValue().toList());
   }
 }
