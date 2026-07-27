@@ -37,50 +37,48 @@ public class LogAnalyserTrident {
             .groupBy(new Fields("call"))
             .persistentAggregate(new Factory(), new Count(), new Fields("count"));
 
-    LocalDRPC drpc = new LocalDRPC();
+    try (LocalDRPC drpc = new LocalDRPC()) {
+      topology
+          .newDRPCStream("call_count", drpc)
+          .stateQuery(callCounts, new Fields("args"), new MapGet(), new Fields("count"));
 
-    topology
-        .newDRPCStream("call_count", drpc)
-        .stateQuery(callCounts, new Fields("args"), new MapGet(), new Fields("count"));
+      topology
+          .newDRPCStream("multiple_call_count", drpc)
+          .each(new Fields("args"), new CSVSplit(), new Fields("call"))
+          .groupBy(new Fields("call"))
+          .stateQuery(callCounts, new Fields("call"), new MapGet(), new Fields("count"))
+          .each(new Fields("call", "count"), new Debug())
+          .each(new Fields("count"), new FilterNull())
+          .aggregate(new Fields("count"), new Sum(), new Fields("sum"));
 
-    topology
-        .newDRPCStream("multiple_call_count", drpc)
-        .each(new Fields("args"), new CSVSplit(), new Fields("call"))
-        .groupBy(new Fields("call"))
-        .stateQuery(callCounts, new Fields("call"), new MapGet(), new Fields("count"))
-        .each(new Fields("call", "count"), new Debug())
-        .each(new Fields("count"), new FilterNull())
-        .aggregate(new Fields("count"), new Sum(), new Fields("sum"));
+      Config conf = new Config();
+      try (LocalCluster cluster = new LocalCluster()) {
+        cluster.submitTopology("trident", conf, topology.build());
+        Random randomGenerator = new Random();
+        int idx = 0;
 
-    Config conf = new Config();
-    LocalCluster cluster = new LocalCluster();
-    cluster.submitTopology("trident", conf, topology.build());
-    Random randomGenerator = new Random();
-    int idx = 0;
+        while (idx < 10) {
+          testSpout.feed(
+              ImmutableList.of(new Values("1234123401", "1234123402", randomGenerator.nextInt(60))));
 
-    while (idx < 10) {
-      testSpout.feed(
-          ImmutableList.of(new Values("1234123401", "1234123402", randomGenerator.nextInt(60))));
+          testSpout.feed(
+              ImmutableList.of(new Values("1234123401", "1234123403", randomGenerator.nextInt(60))));
 
-      testSpout.feed(
-          ImmutableList.of(new Values("1234123401", "1234123403", randomGenerator.nextInt(60))));
+          testSpout.feed(
+              ImmutableList.of(new Values("1234123401", "1234123404", randomGenerator.nextInt(60))));
 
-      testSpout.feed(
-          ImmutableList.of(new Values("1234123401", "1234123404", randomGenerator.nextInt(60))));
+          testSpout.feed(
+              ImmutableList.of(new Values("1234123402", "1234123403", randomGenerator.nextInt(60))));
 
-      testSpout.feed(
-          ImmutableList.of(new Values("1234123402", "1234123403", randomGenerator.nextInt(60))));
+          idx = idx + 1;
+        }
 
-      idx = idx + 1;
+        System.out.println("DRPC : Query starts");
+        System.out.println(drpc.execute("call_count", "1234123401 - 1234123402"));
+        System.out.println(
+            drpc.execute("multiple_call_count", "1234123401 - 1234123402,1234123401 - 1234123403"));
+        System.out.println("DRPC : Query ends");
+      }
     }
-
-    System.out.println("DRPC : Query starts");
-    System.out.println(drpc.execute("call_count", "1234123401 - 1234123402"));
-    System.out.println(
-        drpc.execute("multiple_call_count", "1234123401 - 1234123402,1234123401 - 1234123403"));
-    System.out.println("DRPC : Query ends");
-
-    cluster.shutdown();
-    drpc.shutdown();
   }
 }

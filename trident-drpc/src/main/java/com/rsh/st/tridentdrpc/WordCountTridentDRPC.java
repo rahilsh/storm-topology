@@ -14,33 +14,32 @@ public class WordCountTridentDRPC {
 
   public static void main(String[] args) throws Exception {
     TridentTopology topology = new TridentTopology();
-    LocalDRPC drpc = new LocalDRPC();
 
-    topology
-        .newDRPCStream("countNoOfOccurrence", drpc)
-        .each(new Fields("args"), new Split(), new Fields("word"))
-        .each(new Fields("word"), new Debug())
-        .groupBy(new Fields("word"))
-        .aggregate(new Fields("word"), new Count(), new Fields("count"))
-        .parallelismHint(9);
+    try (LocalDRPC drpc = new LocalDRPC()) {
+      topology
+          .newDRPCStream("countNoOfOccurrence", drpc)
+          .each(new Fields("args"), new Split(), new Fields("word"))
+          .each(new Fields("word"), new Debug())
+          .groupBy(new Fields("word"))
+          .aggregate(new Fields("word"), new Count(), new Fields("count"))
+          .parallelismHint(9);
 
-    topology
-        .newDRPCStream("totalWords", drpc)
-        .each(new Fields("args"), new Split(), new Fields("word"))
-        .each(new Fields("word"), new Debug())
-        .parallelismHint(3)
-        .groupBy(new Fields("word"))
-        .aggregate(new Fields("word"), new Count(), new Fields("count"))
-        .aggregate(new Fields("count"), new Sum(), new Fields("sum"));
+      topology
+          .newDRPCStream("totalWords", drpc)
+          .each(new Fields("args"), new Split(), new Fields("word"))
+          .each(new Fields("word"), new Debug())
+          .parallelismHint(3)
+          .groupBy(new Fields("word"))
+          .aggregate(new Fields("word"), new Count(), new Fields("count"))
+          .aggregate(new Fields("count"), new Sum(), new Fields("sum"));
 
-    Config conf = new Config();
-    LocalCluster cluster = new LocalCluster();
-    cluster.submitTopology("trident", conf, topology.build());
-    final String input = "cat dog man";
-    System.out.println("countNoOfOccurrence: " + drpc.execute("countNoOfOccurrence", input));
-    System.out.println("totalWords: " + drpc.execute("totalWords", input));
-
-    cluster.shutdown();
-    drpc.shutdown();
+      Config conf = new Config();
+      try (LocalCluster cluster = new LocalCluster()) {
+        cluster.submitTopology("trident", conf, topology.build());
+        final String input = "cat dog man";
+        System.out.println("countNoOfOccurrence: " + drpc.execute("countNoOfOccurrence", input));
+        System.out.println("totalWords: " + drpc.execute("totalWords", input));
+      }
+    }
   }
 }

@@ -28,7 +28,6 @@ public class Main {
       cluster.submitTopology("square_topology", config, topology);
       Thread.sleep(10000);
       cluster.killTopology("square_topology");
-      cluster.shutdown();
     }
   }
 }
