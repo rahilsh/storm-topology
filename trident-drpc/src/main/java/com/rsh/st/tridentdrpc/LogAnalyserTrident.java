@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: Apache-2.0 */
 package com.rsh.st.tridentdrpc;
 
 import com.google.common.collect.ImmutableList;
@@ -59,16 +60,20 @@ public class LogAnalyserTrident {
 
         while (idx < 10) {
           testSpout.feed(
-              ImmutableList.of(new Values("1234123401", "1234123402", randomGenerator.nextInt(60))));
+              ImmutableList.of(
+                  new Values("1234123401", "1234123402", randomGenerator.nextInt(60))));
 
           testSpout.feed(
-              ImmutableList.of(new Values("1234123401", "1234123403", randomGenerator.nextInt(60))));
+              ImmutableList.of(
+                  new Values("1234123401", "1234123403", randomGenerator.nextInt(60))));
 
           testSpout.feed(
-              ImmutableList.of(new Values("1234123401", "1234123404", randomGenerator.nextInt(60))));
+              ImmutableList.of(
+                  new Values("1234123401", "1234123404", randomGenerator.nextInt(60))));
 
           testSpout.feed(
-              ImmutableList.of(new Values("1234123402", "1234123403", randomGenerator.nextInt(60))));
+              ImmutableList.of(
+                  new Values("1234123402", "1234123403", randomGenerator.nextInt(60))));
 
           idx = idx + 1;
         }

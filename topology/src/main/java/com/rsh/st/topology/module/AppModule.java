@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: Apache-2.0 */
 package com.rsh.st.topology.module;
 
 import com.google.inject.AbstractModule;

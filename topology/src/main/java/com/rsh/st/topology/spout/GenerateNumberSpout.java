@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: Apache-2.0 */
 package com.rsh.st.topology.spout;
 
 import java.util.Map;
