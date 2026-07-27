@@ -9,7 +9,7 @@
     <module>trident-drpc</module>
     <module>topology</module>
   </modules>
-  <groupId>in.rsh.st</groupId>
+  <groupId>com.rsh.st</groupId>
   <version>1.0.0-SNAPSHOT</version>
 
   <modelVersion>4.0.0</modelVersion>

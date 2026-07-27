@@ -1,10 +1,10 @@
-package in.rsh.st.topology.module;
+package com.rsh.st.topology.module;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
-import in.rsh.st.topology.client.DummyClass;
+import com.rsh.st.topology.client.DummyClass;
 
 public class AppModule extends AbstractModule {
 

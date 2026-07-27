@@ -1,4 +1,4 @@
-package in.rsh.st.topology.client;
+package com.rsh.st.topology.client;
 
 public class DummyClass {
 

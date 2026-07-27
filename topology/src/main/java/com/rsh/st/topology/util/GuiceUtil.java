@@ -1,8 +1,8 @@
-package in.rsh.st.topology.util;
+package com.rsh.st.topology.util;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import in.rsh.st.topology.module.AppModule;
+import com.rsh.st.topology.module.AppModule;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

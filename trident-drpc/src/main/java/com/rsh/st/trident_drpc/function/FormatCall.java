@@ -1,4 +1,4 @@
-package in.rsh.st.tridentdrpc.function;
+package com.rsh.st.trident_drpc.function;
 
 import org.apache.storm.trident.operation.BaseFunction;
 import org.apache.storm.trident.operation.TridentCollector;

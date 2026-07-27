@@ -1,7 +1,7 @@
-package in.rsh.st.topology.service;
+package com.rsh.st.topology.service;
 
 import com.google.inject.Inject;
-import in.rsh.st.topology.client.DummyClass;
+import com.rsh.st.topology.client.DummyClass;
 
 public class ExternalService {
 
