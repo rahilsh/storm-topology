@@ -9,6 +9,12 @@ and this project adheres to
 ## [Unreleased]
 
 ### Added
+- New `storm3-features` module with examples of Apache Storm 3.0 capabilities:
+  - windowed aggregation with `BaseWindowedBolt` (`WindowedSumTopology`),
+  - `JitterAwareStreamGrouping` (`JitterAwareGroupingTopology`),
+  - Zstd tuple compression and AIMD dynamic batching config (`Storm3Configs`).
+- Unit and integration tests for every module, an 85% JaCoCo line-coverage gate,
+  Spotless formatting (with license headers), and SpotBugs static analysis.
 - Unit tests for `SquareBolt`, `ExternalService`, `CSVSplit`, and `FormatCall`.
 - `maven-enforcer-plugin` to require Java 25 and Maven 3.9+ with an actionable
   error message.

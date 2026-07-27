@@ -6,7 +6,8 @@
 [![Apache Storm 3.0.0](https://img.shields.io/badge/Apache%20Storm-3.0.0-brightgreen.svg)](https://storm.apache.org/)
 
 Runnable, self-contained [Apache Storm](https://storm.apache.org/) examples that
-demonstrate core streaming, Trident, and DRPC patterns on Storm 3.x. Every
+demonstrate core streaming, Trident, and DRPC patterns — plus the new features
+in **Storm 3.0** (windowing, Zstd compression, jitter-aware grouping). Every
 example runs on an in-process `LocalCluster`, so you can explore Storm without
 deploying a real cluster.
 
@@ -27,6 +28,9 @@ lower JDK is used.
 | Trident high-level API (aggregation, persistent state) | `trident-drpc` |
 | Distributed RPC (DRPC) queries | `trident-drpc` |
 | Writing custom Trident functions | `trident-drpc` |
+| Windowed aggregation (tumbling windows) | `storm3-features` |
+| Storm 3.0 Zstd compression & dynamic batching | `storm3-features` |
+| Storm 3.0 `JitterAwareStreamGrouping` | `storm3-features` |
 
 ## Modules
 
@@ -96,6 +100,38 @@ mvn -pl trident-drpc exec:java \
   -Dexec.mainClass=com.rsh.st.tridentdrpc.LogAnalyserTrident
 ```
 
+### `storm3-features` — new in Apache Storm 3.0
+
+Examples of capabilities introduced in Storm 3.0.
+
+#### Windowed aggregation
+
+`TumblingSumBolt` (a `BaseWindowedBolt`) sums the numbers in each fixed-size
+window. `WindowedSumTopology` wires `SequentialNumberSpout -> windowed-sum` and
+also enables Zstd tuple compression via `Storm3Configs`.
+
+```bash
+mvn -pl storm3-features exec:java \
+  -Dexec.mainClass=com.rsh.st.storm3.windowing.WindowedSumTopology
+```
+
+#### JitterAwareStreamGrouping
+
+`JitterAwareGroupingTopology` routes tuples with
+`customGrouping(..., new JitterAwareStreamGrouping())` — the Storm 3.0 grouping
+that steers work away from high-jitter tasks — instead of `shuffleGrouping`.
+
+```bash
+mvn -pl storm3-features exec:java \
+  -Dexec.mainClass=com.rsh.st.storm3.grouping.JitterAwareGroupingTopology
+```
+
+#### Transport config features
+
+`Storm3Configs` shows how to enable the opt-in Storm 3.0 transport features via
+the topology `Config`: **Zstd tuple compression** and **AIMD dynamic producer
+batching**. See `Storm3ConfigsTest` for the exact keys.
+
 ## Dependency injection in a bolt
 
 Storm constructs bolts itself, so `PrintBolt` can't be created by a Guice
@@ -124,8 +160,15 @@ Make sure Maven runs on JDK 25, then:
 
 ```bash
 export JAVA_HOME=$(/usr/libexec/java_home -v 25)   # macOS
-mvn clean test
+
+mvn clean test     # fast unit tests
+mvn clean verify   # + integration tests, formatting, SpotBugs, 85% coverage gate
 ```
+
+`mvn verify` runs the full pipeline: `spotless:check` (formatting + license
+headers), SpotBugs static analysis, unit tests, end-to-end integration tests
+(`*IT`, which run the example topologies on a `LocalCluster`), and a JaCoCo
+line-coverage gate of 85%.
 
 > Note: if `java_home -v 25` resolves to an older JDK, the Homebrew JDK 25 is
 > not registered with macOS. Point `JAVA_HOME` at it directly, e.g.
