@@ -4,8 +4,8 @@ package com.rsh.st.topology.bolt;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
+import com.rsh.st.topology.hook.GuiceWorkerHook;
 import com.rsh.st.topology.service.ExternalService;
-import com.rsh.st.topology.util.GuiceUtil;
 import java.util.Map;
 import java.util.TreeMap;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,8 @@ public class PrintBolt extends BaseRichBolt {
   public void prepare(
       Map<String, Object> map, TopologyContext topologyContext, OutputCollector outputCollector) {
     numsq = new TreeMap<>();
-    final Injector injector = GuiceUtil.getInjector();
+    final Injector injector =
+        (Injector) topologyContext.getResource(GuiceWorkerHook.INJECTOR_RESOURCE);
     this.externalService = injector.getInstance(ExternalService.class);
     this.dummyConstant = injector.getInstance(Key.get(String.class, Names.named("dummyConstant")));
   }
