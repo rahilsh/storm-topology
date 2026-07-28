@@ -1,6 +1,6 @@
-# storm-topology
+# storm-lab
 
-[![Java CI with Maven](https://github.com/rahilsh/storm-topology/actions/workflows/maven.yml/badge.svg)](https://github.com/rahilsh/storm-topology/actions/workflows/maven.yml)
+[![Java CI with Maven](https://github.com/rahilsh/storm-lab/actions/workflows/maven.yml/badge.svg)](https://github.com/rahilsh/storm-lab/actions/workflows/maven.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Java 25](https://img.shields.io/badge/Java-25-orange.svg)](https://adoptium.net/)
 [![Apache Storm 3.0.0](https://img.shields.io/badge/Apache%20Storm-3.0.0-brightgreen.svg)](https://storm.apache.org/)
@@ -19,22 +19,43 @@ deploying a real cluster.
 The build fails fast with a clear message (via `maven-enforcer-plugin`) if a
 lower JDK is used.
 
+## Project structure
+
+A single Maven module whose packages are organised by concept:
+
+```
+src/main/java/com/rsh/stormlab/
+  basics/     spout -> bolt -> bolt topology (Main)
+  di/         Guice dependency injection via a Storm WorkerHook
+  trident/    Trident + DRPC (WordCountTridentDRPC, LogAnalyserTrident)
+  windowing/  tumbling-window aggregation
+  grouping/   JitterAwareStreamGrouping
+  config/     Storm 3.0 transport config (Zstd, dynamic batching)
+  common/     shared spouts
+```
+
 ## What you'll learn
 
-| Concept | Where |
+| Concept | Package |
 | --- | --- |
-| Spouts, bolts & stream groupings | `topology` |
-| Dependency injection inside a bolt (Guice) | `topology` |
-| Trident high-level API (aggregation, persistent state) | `trident-drpc` |
-| Distributed RPC (DRPC) queries | `trident-drpc` |
-| Writing custom Trident functions | `trident-drpc` |
-| Windowed aggregation (tumbling windows) | `storm3-features` |
-| Storm 3.0 Zstd compression & dynamic batching | `storm3-features` |
-| Storm 3.0 `JitterAwareStreamGrouping` | `storm3-features` |
+| Spouts, bolts & stream groupings | `basics` |
+| Dependency injection inside a bolt (Guice + WorkerHook) | `di` |
+| Trident high-level API (aggregation, persistent state) | `trident` |
+| Distributed RPC (DRPC) queries | `trident` |
+| Writing custom Trident functions | `trident` |
+| Windowed aggregation (tumbling windows) | `windowing` |
+| Storm 3.0 `JitterAwareStreamGrouping` | `grouping` |
+| Storm 3.0 Zstd compression & dynamic batching | `config` |
 
-## Modules
+## Examples
 
-### `topology` — spouts, bolts & Guice DI
+Each example has a `main` that runs on a `LocalCluster`. Run any of them with:
+
+```bash
+mvn compile exec:java -Dexec.mainClass=<class>
+```
+
+### `basics` — spouts, bolts & Guice DI
 
 A plain Storm topology that generates numbers, squares them, and collects the
 results.
@@ -48,37 +69,33 @@ GenerateNumberSpout  ->  SquareBolt  ->  PrintBolt
 - **`SquareBolt`** reads the `numbers` field and emits `(numbers, numbersquare)`.
 - **`PrintBolt`** collects the pairs into a sorted map and logs them. It is wired
   with [Guice](https://github.com/google/inject) to demonstrate dependency
-  injection inside a bolt.
-
-Run it (spins up a local cluster for ~10s, then shuts down):
+  injection inside a bolt (see [below](#dependency-injection-in-a-bolt)).
 
 ```bash
-mvn -pl topology exec:java -Dexec.mainClass=com.rsh.st.topology.Main
+mvn compile exec:java -Dexec.mainClass=com.rsh.stormlab.basics.Main
 ```
 
 Results are logged via SLF4J, e.g.:
 
 ```
-INFO  c.r.s.t.bolt.PrintBolt - Result
-INFO  c.r.s.t.bolt.PrintBolt - 2 : 4
-INFO  c.r.s.t.bolt.PrintBolt - 4 : 16
-INFO  c.r.s.t.bolt.PrintBolt - 6 : 36
+INFO  PrintBolt - Result
+INFO  PrintBolt - 2 : 4
+INFO  PrintBolt - 4 : 16
+INFO  PrintBolt - 6 : 36
 ...
 ```
 
-### `trident-drpc` — Trident & DRPC
+### `trident` — Trident & DRPC
 
 Higher-level [Trident](https://storm.apache.org/releases/current/Trident-tutorial.html)
 topologies queried over DRPC.
 
-#### `WordCountTridentDRPC`
-
-Counts words from a DRPC argument string using Trident's built-in `Split`,
-`Count`, and `Sum`.
+**`WordCountTridentDRPC`** counts words from a DRPC argument string using
+Trident's built-in `Split`, `Count`, and `Sum`.
 
 ```bash
-mvn -pl trident-drpc exec:java \
-  -Dexec.mainClass=com.rsh.st.tridentdrpc.WordCountTridentDRPC
+mvn compile exec:java \
+  -Dexec.mainClass=com.rsh.stormlab.trident.WordCountTridentDRPC
 ```
 
 Expected output:
@@ -88,45 +105,39 @@ countNoOfOccurrence: [["man",1],["cat",1],["dog",1]]
 totalWords: [[3]]
 ```
 
-#### `LogAnalyserTrident`
-
-Aggregates call records into persistent Trident state (`MemoryMapState`) and
-exposes two DRPC queries (`call_count`, `multiple_call_count`). The custom
-functions `FormatCall` and `CSVSplit` show how to write your own Trident
-operations.
+**`LogAnalyserTrident`** aggregates call records into persistent Trident state
+(`MemoryMapState`) and exposes two DRPC queries (`call_count`,
+`multiple_call_count`). The custom functions `FormatCall` and `CSVSplit` show how
+to write your own Trident operations.
 
 ```bash
-mvn -pl trident-drpc exec:java \
-  -Dexec.mainClass=com.rsh.st.tridentdrpc.LogAnalyserTrident
+mvn compile exec:java \
+  -Dexec.mainClass=com.rsh.stormlab.trident.LogAnalyserTrident
 ```
 
-### `storm3-features` — new in Apache Storm 3.0
-
-Examples of capabilities introduced in Storm 3.0.
-
-#### Windowed aggregation
+### `windowing` — tumbling-window aggregation
 
 `TumblingSumBolt` (a `BaseWindowedBolt`) sums the numbers in each fixed-size
 window. `WindowedSumTopology` wires `SequentialNumberSpout -> windowed-sum` and
-also enables Zstd tuple compression via `Storm3Configs`.
+also enables Storm 3.0 Zstd tuple compression via `config.Storm3Configs`.
 
 ```bash
-mvn -pl storm3-features exec:java \
-  -Dexec.mainClass=com.rsh.st.storm3.windowing.WindowedSumTopology
+mvn compile exec:java \
+  -Dexec.mainClass=com.rsh.stormlab.windowing.WindowedSumTopology
 ```
 
-#### JitterAwareStreamGrouping
+### `grouping` — JitterAwareStreamGrouping
 
 `JitterAwareGroupingTopology` routes tuples with
 `customGrouping(..., new JitterAwareStreamGrouping())` — the Storm 3.0 grouping
 that steers work away from high-jitter tasks — instead of `shuffleGrouping`.
 
 ```bash
-mvn -pl storm3-features exec:java \
-  -Dexec.mainClass=com.rsh.st.storm3.grouping.JitterAwareGroupingTopology
+mvn compile exec:java \
+  -Dexec.mainClass=com.rsh.stormlab.grouping.JitterAwareGroupingTopology
 ```
 
-#### Transport config features
+### `config` — Storm 3.0 transport features
 
 `Storm3Configs` shows how to enable the opt-in Storm 3.0 transport features via
 the topology `Config`: **Zstd tuple compression** and **AIMD dynamic producer
@@ -135,7 +146,7 @@ batching**. See `Storm3ConfigsTest` for the exact keys.
 ## Dependency injection in a bolt
 
 Storm constructs bolts itself, so `PrintBolt` can't be created by a Guice
-injector directly. This module uses Storm's recommended
+injector directly. This project uses Storm's recommended
 [worker-hook](https://storm.apache.org/releases/3.0.0/Hooks.html) mechanism to
 share a single injector across every task in a worker:
 

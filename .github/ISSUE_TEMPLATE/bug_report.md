@@ -10,14 +10,14 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
-**Which example / module**
-e.g. `topology` (`Main`), `trident-drpc` (`WordCountTridentDRPC` / `LogAnalyserTrident`).
+**Which example / package**
+e.g. `basics` (`Main`), `trident` (`WordCountTridentDRPC` / `LogAnalyserTrident`).
 
 **To Reproduce**
 The exact command you ran, e.g.:
 
 ```bash
-mvn -pl trident-drpc exec:java -Dexec.mainClass=com.rsh.st.tridentdrpc.WordCountTridentDRPC
+mvn compile exec:java -Dexec.mainClass=com.rsh.stormlab.trident.WordCountTridentDRPC
 ```
 
 **Expected behavior**

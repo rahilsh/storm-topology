@@ -9,7 +9,8 @@ and this project adheres to
 ## [Unreleased]
 
 ### Added
-- New `storm3-features` module with examples of Apache Storm 3.0 capabilities:
+- New examples of Apache Storm 3.0 capabilities (in the `windowing`, `grouping`,
+  and `config` packages):
   - windowed aggregation with `BaseWindowedBolt` (`WindowedSumTopology`),
   - `JitterAwareStreamGrouping` (`JitterAwareGroupingTopology`),
   - Zstd tuple compression and AIMD dynamic batching config (`Storm3Configs`).
@@ -24,6 +25,12 @@ and this project adheres to
 - This changelog.
 
 ### Changed
+- Renamed the project to **storm-lab** (groupId `com.rsh.stormlab`, base package
+  `com.rsh.stormlab`).
+- Collapsed the three topic-split Maven modules (`topology`, `trident-drpc`,
+  `storm3-features`) into a **single module organised by concept** (`basics`,
+  `di`, `trident`, `windowing`, `grouping`, `config`, `common`). Dropped the now
+  unused `javax.inject`, `slf4j-log4j12`, and `guava` dependencies.
 - Share the Guice injector via a Storm `WorkerHook` (`GuiceWorkerHook`) instead
   of a static singleton, following Storm's documented worker-resource pattern
   (`WorkerUserContext.setResource` / `TopologyContext.getResource`).
