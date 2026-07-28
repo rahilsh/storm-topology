@@ -24,6 +24,9 @@ and this project adheres to
 - This changelog.
 
 ### Changed
+- Share the Guice injector via a Storm `WorkerHook` (`GuiceWorkerHook`) instead
+  of a static singleton, following Storm's documented worker-resource pattern
+  (`WorkerUserContext.setResource` / `TopologyContext.getResource`).
 - Upgraded **Apache Storm 2.8.x → 3.0.0**, which requires **Java 25** (was
   Java 21).
 - CI now runs `mvn verify` (which executes the tests) instead of `mvn package`.

@@ -135,24 +135,29 @@ batching**. See `Storm3ConfigsTest` for the exact keys.
 ## Dependency injection in a bolt
 
 Storm constructs bolts itself, so `PrintBolt` can't be created by a Guice
-injector directly. Instead the injector is exposed as a process-wide singleton
-and the bolt pulls its collaborators when it starts:
+injector directly. This module uses Storm's recommended
+[worker-hook](https://storm.apache.org/releases/3.0.0/Hooks.html) mechanism to
+share a single injector across every task in a worker:
 
 - `AppModule` declares the Guice bindings.
-- `GuiceUtil` holds a single `Injector` in a `static` field.
-- `PrintBolt.prepare()` resolves its dependencies from that injector.
+- `GuiceWorkerHook` builds the `Injector` once per worker in `start(...)` and
+  publishes it with `WorkerUserContext.setResource("guice.injector", injector)`.
+- `Main` registers the hook via `TopologyBuilder.addWorkerHook(...)`.
+- `PrintBolt.prepare()` reads it back with
+  `context.getResource("guice.injector")`.
 
 ```
-AppModule (bindings)  ->  GuiceUtil (static Injector)  ->  PrintBolt.prepare()
+AppModule (bindings)
+   -> GuiceWorkerHook.start()  --setResource-->  worker
+        -> PrintBolt.prepare()  --getResource-->  Injector
 ```
 
-> **Caveat — local vs. distributed mode.** Bolts are serialized and shipped to
-> workers; the static `Injector` is **not** serialized — it is lazily recreated
-> in each worker JVM the first time `GuiceUtil` is loaded. That is fine for the
-> stateless bindings used here, but any binding that depends on runtime
-> configuration passed through the topology `Config` will not see it. For
-> production wiring, resolve dependencies in `prepare()` from the Storm
-> `conf`/`TopologyContext`, or use a Storm `WorkerHook`.
+Per the Storm docs, worker-level `userResources` are "shared across executors,
+tasks, worker hooks and task hooks" and "can only be written by worker hooks" —
+making this the sanctioned way to publish an application-level resource such as a
+DI injector. Unlike a static singleton, the hook is serialized with the
+topology, runs at a defined lifecycle point with access to the topology `Config`,
+and keeps no global static state.
 
 ## Build & Test
 
