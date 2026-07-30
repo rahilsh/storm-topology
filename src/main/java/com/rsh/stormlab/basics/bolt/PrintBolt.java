@@ -23,11 +23,10 @@ public class PrintBolt extends BaseRichBolt {
   private String dummyConstant;
   private transient ExternalService externalService;
 
-  private Map<Integer, Integer> numsq = null;
+  private final Map<Integer, Integer> numToSquareMap = new TreeMap<>();
 
   public void prepare(
       Map<String, Object> map, TopologyContext topologyContext, OutputCollector outputCollector) {
-    numsq = new TreeMap<>();
     final Injector injector =
         (Injector) topologyContext.getResource(GuiceWorkerHook.INJECTOR_RESOURCE);
     this.externalService = injector.getInstance(ExternalService.class);
@@ -37,15 +36,15 @@ public class PrintBolt extends BaseRichBolt {
   public void execute(Tuple tuple) {
     final Integer number = tuple.getIntegerByField("numbers");
     final Integer square = tuple.getIntegerByField("numbersquare");
-    log.info("dummyConstant=" + dummyConstant);
-    log.info("externalService.getSomething()=" + externalService.getSomething());
-    numsq.put(number, square);
+    log.info("dummyConstant={}", dummyConstant);
+    log.info("externalService.getSomething()={}", externalService.getSomething());
+    numToSquareMap.put(number, square);
   }
 
   @Override
   public void cleanup() {
     log.info("Result");
-    numsq.forEach((k, v) -> log.info("{} : {}", k, v));
+    numToSquareMap.forEach((k, v) -> log.info("{} : {}", k, v));
     super.cleanup();
   }
 

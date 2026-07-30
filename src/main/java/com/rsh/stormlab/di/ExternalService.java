@@ -13,6 +13,6 @@ public class ExternalService {
   }
 
   public String getSomething() {
-    return dummyClass.getSomething();
+    return dummyClass.something();
   }
 }

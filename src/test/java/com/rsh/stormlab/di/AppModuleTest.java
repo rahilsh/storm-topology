@@ -25,7 +25,7 @@ class AppModuleTest {
     DummyClass first = injector.getInstance(DummyClass.class);
     DummyClass second = injector.getInstance(DummyClass.class);
 
-    assertEquals("something variable", first.getSomething());
+    assertEquals("something variable", first.something());
     assertEquals(first, second);
   }
 }

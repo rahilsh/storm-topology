@@ -10,7 +10,7 @@ public class CSVSplit extends BaseFunction {
   @Override
   public void execute(TridentTuple tuple, TridentCollector collector) {
     for (String word : tuple.getString(0).split(",")) {
-      if (word.length() > 0) {
+      if (!word.isEmpty()) {
         collector.emit(new Values(word));
       }
     }
